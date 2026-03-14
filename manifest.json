@@ -1,0 +1,12 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "FinLo",
+  "orientation": "portrait",
+  "scope": "/",
+  "short_name": "Finlo",
+  "start_url": "https://kmark233.github.io/FinLo/",
+  "theme_color": "#606e8e",
+  "lang": "el"
+}
