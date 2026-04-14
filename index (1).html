@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#2563eb"/>
+<meta name="application-name" content="Finlo"/>
+<title>◎ Finlo</title>
+<link rel="manifest" href="manifest.json"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f1f5f9;--surface:#fff;--surface2:#f8fafc;--border:#e2e8f0;--text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --blue:#2563eb;--green:#16a34a;--red:#dc2626;--orange:#ea580c;
+  --hero1:#2563eb;--hero2:#1d4ed8;
+  --card-shadow:0 1px 4px rgba(0,0,0,.07);
+}
+body.dark{
+  --bg:#0f172a;--surface:#1e293b;--surface2:#273548;--border:#334155;--text:#f1f5f9;--text2:#94a3b8;--text3:#475569;
+  --hero1:#1d4ed8;--hero2:#1e3a8a;
+  --card-shadow:0 1px 4px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
+button,input,select,textarea{font-family:inherit}
+.card{background:var(--surface);border-radius:16px;box-shadow:var(--card-shadow);overflow:hidden}
+.btn{border:none;border-radius:12px;padding:12px 18px;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:filter .15s,transform .1s}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-green{background:var(--green);color:#fff}
+.btn-red{background:var(--red);color:#fff}
+.btn-gray{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+.btn:hover{filter:brightness(1.08)} .btn:active{transform:scale(.97)}
+.badge{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block}
+input,select,textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;font-size:14px;outline:none;color:var(--text)}
+input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+label{display:block;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:500;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;padding:20px 20px 36px}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
+.modal-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.field{margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+header{background:var(--surface);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+.content{padding:16px;padding-bottom:90px;max-width:900px;margin:0 auto;touch-action:pan-y}
+.tx-row{display:flex;align-items:center;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;background:var(--surface)}
+.tx-row:last-child{border-bottom:none}
+.tx-row:hover{background:var(--surface2)}
+.tx-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:12px}
+.tx-dot{width:14px;height:14px;border-radius:4px}
+.pill{padding:7px 14px;border-radius:20px;border:none;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s}
+.pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:12px}
+.pills::-webkit-scrollbar{display:none}
+.hero{background:linear-gradient(135deg,var(--hero1),var(--hero2));border-radius:20px;padding:24px 20px;margin-bottom:16px;color:#fff}
+.stat-mini{flex:1;background:rgba(255,255,255,.15);border-radius:12px;padding:10px 12px}
+.progress-bar{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin-top:5px}
+.mono{font-family:'Courier New',monospace}
+/* BOTTOM NAV */
+#bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;height:68px;padding:0 8px 4px;box-shadow:0 -4px 24px rgba(0,0,0,.1)}
+body.dark #bottom-nav{background:#1a2535;box-shadow:0 -4px 24px rgba(0,0,0,.4)}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:none;background:none;cursor:pointer;padding:8px 4px;border-radius:16px;transition:all .2s;color:var(--text3);min-width:0;position:relative}
+.bnav-btn.active{color:var(--blue)}
+.bnav-btn.active::before{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:32px;height:3px;background:var(--blue);border-radius:2px}
+.bnav-btn .bnav-icon{font-size:24px;line-height:1;transition:transform .2s}
+.bnav-btn.active .bnav-icon{transform:scale(1.18) translateY(-1px)}
+.bnav-btn .bnav-label{font-size:10px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60px;transition:color .2s}
+/* FAB center button */
+#fab{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:210;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7c6ff7,#2563eb);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(37,99,235,.6);display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;font-weight:300;transition:transform .15s,box-shadow .15s;line-height:1}
+#fab:hover{transform:translateX(-50%) scale(1.1);box-shadow:0 8px 28px rgba(37,99,235,.7)}
+#fab:active{transform:translateX(-50%) scale(.94)}
+/* FAB center button */
+#fab{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:210;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7c6ff7,#2563eb);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(37,99,235,.6);display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;font-weight:300;transition:transform .15s,box-shadow .15s;line-height:1}
+#fab:hover{transform:translateX(-50%) scale(1.1);box-shadow:0 8px 28px rgba(37,99,235,.7)}
+#fab:active{transform:translateX(-50%) scale(.94)}
+.color-dot{width:36px;height:36px;border-radius:10px;cursor:pointer;transition:box-shadow .15s}
+.alert-banner{border-radius:12px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700}
+.search-bar{position:relative;margin-bottom:14px}
+.search-bar input{padding-left:38px}
+.search-bar .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:16px;pointer-events:none}
+@media(min-width:640px){.modal{border-radius:16px;margin:auto;bottom:auto}}
+/* Toast */
+#toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-8px);z-index:999;background:var(--ink,#1e293b);color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,0,0,.25);opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.success{background:#16a34a}
+#toast.error{background:#dc2626}
+.toast-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+#__pdf_print{display:none}
+@media print{
+  header,#drawer,#drawer-bg,#modal-container,#content,#alerts-bar{display:none!important}
+  #__pdf_print{display:block!important;font-family:Arial,sans-serif;font-size:12px;padding:28px;color:#1e293b}
+  .pdf-top{display:flex;justify-content:space-between;margin-bottom:24px;padding-bottom:14px;border-bottom:2px solid #2563eb}
+  .pdf-logo{font-size:20px;font-weight:900;color:#2563eb}.pdf-sub{color:#94a3b8;font-size:11px}
+  .pdf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+  .pdf-stat{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px}
+  .pdf-sl{color:#64748b;font-size:10px;text-transform:uppercase;margin-bottom:4px}
+  .pdf-sv{font-size:18px;font-weight:800;font-family:monospace}
+  .pdf-table{width:100%;border-collapse:collapse}
+  .pdf-table th{background:#f1f5f9;padding:7px 9px;text-align:left;font-size:10px;text-transform:uppercase;color:#64748b}
+  .pdf-table td{padding:8px 9px;border-bottom:1px solid #f1f5f9;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Logo left — click to go home -->
+  <div onclick="goTab('dashboard')" style="cursor:pointer;display:flex;align-items:center" title="Αρχική">
+  <svg width="80" height="32" viewBox="0 0 200 80" aria-label="Finlo">
+    <defs>
+      <linearGradient id="hdr-F" x1="0%" y1="0%" x2="60%" y2="100%">
+        <stop offset="0%" stop-color="#7c6ff7"/>
+        <stop offset="50%" stop-color="#3b6ef6"/>
+        <stop offset="100%" stop-color="#2563eb"/>
+      </linearGradient>
+      <linearGradient id="hdr-arrow" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#06b6d4"/>
+        <stop offset="100%" stop-color="#22d3ee"/>
+      </linearGradient>
+      <linearGradient id="hdr-text" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#1e293b"/>
+        <stop offset="100%" stop-color="#1e40af"/>
+      </linearGradient>
+      <linearGradient id="hdr-text-dark" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#f1f5f9"/>
+        <stop offset="100%" stop-color="#93c5fd"/>
+      </linearGradient>
+    </defs>
+    <rect x="8" y="6" width="13" height="68" rx="5" fill="url(#hdr-F)"/>
+    <rect x="8" y="6" width="46" height="13" rx="5" fill="url(#hdr-F)"/>
+    <rect x="8" y="34" width="34" height="12" rx="5" fill="url(#hdr-F)" opacity=".85"/>
+    <line x1="56" y1="72" x2="76" y2="42" stroke="url(#hdr-arrow)" stroke-width="4.5" stroke-linecap="round"/>
+    <polygon points="76,42 62,40 70,54" fill="url(#hdr-arrow)"/>
+    <text id="hdr-wm" x="92" y="56" font-family="Syne,sans-serif" font-weight="800" font-size="42" fill="url(#hdr-text)" letter-spacing="-1.5">finlo</text>
+  </svg>
+  </div><!-- /logo wrapper -->
+  <!-- Right actions -->
+  <div style="display:flex;align-items:center;gap:6px">
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--text2)">
+      Υπόλοιπο: <span id="hdr-balance" class="mono" style="color:var(--blue);font-size:13px"></span>
+    </div>
+    <button onclick="toggleDark()" style="background:var(--surface2);border:1px solid var(--border);border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Dark mode">🌙</button>
+    <button onclick="openSheet('export')" style="background:var(--surface2);border:1px solid var(--border);border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Εξαγωγή PDF">🖨</button>
+  </div>
+</header>
+
+<div id="alerts-bar" style="max-width:900px;margin:0 auto;padding:0 16px"></div>
+<div class="content" id="content"></div>
+
+<!-- BOTTOM NAV -->
+<nav id="bottom-nav">
+  <button class="bnav-btn" id="bnav-dashboard" onclick="goTab('dashboard')">
+    <span class="bnav-icon">🏠</span>
+    <span class="bnav-label">Αρχική</span>
+  </button>
+  <button class="bnav-btn" id="bnav-transactions" onclick="goTab('transactions')">
+    <span class="bnav-icon">💳</span>
+    <span class="bnav-label">Κινήσεις</span>
+  </button>
+  <!-- FAB placeholder space -->
+  <div style="width:56px;flex-shrink:0"></div>
+  <button class="bnav-btn" id="bnav-wallet" onclick="goTab('wallet')">
+    <span class="bnav-icon">👛</span>
+    <span class="bnav-label">Πορτοφόλι</span>
+  </button>
+  <button class="bnav-btn" id="bnav-more" onclick="toggleMoreMenu()">
+    <span class="bnav-icon">☰</span>
+    <span class="bnav-label">Μενού</span>
+  </button>
+</nav>
+
+<!-- FAB -->
+<button id="fab" onclick="fabAction()" title="Νέα εγγραφή">＋</button>
+
+<!-- MORE MENU (popup) -->
+<div id="more-menu" style="display:none;position:fixed;bottom:72px;right:12px;z-index:300;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.15);overflow:hidden;min-width:180px">
+  <button onclick="goTab('compare');toggleMoreMenu()" style="width:100%;padding:14px 18px;border:none;background:none;text-align:left;cursor:pointer;font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)">📈 Σύγκριση</button>
+  <button onclick="goTab('suppliers');toggleMoreMenu()" style="width:100%;padding:14px 18px;border:none;background:none;text-align:left;cursor:pointer;font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)">🤝 Συναλλ/νοι</button>
+  <button onclick="goTab('alerts');toggleMoreMenu()" style="width:100%;padding:14px 18px;border:none;background:none;text-align:left;cursor:pointer;font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:10px">🔔 Ειδοποιήσεις</button>
+</div>
+<div id="more-bg" style="display:none;position:fixed;inset:0;z-index:299" onclick="toggleMoreMenu()"></div>
+
+<div id="modal-container"></div>
+<div id="toast"></div>
+
+<script>
+// ── STORAGE ──
+function save(){
+  localStorage.setItem('bf_txs', JSON.stringify(txs));
+  localStorage.setItem('bf_cats', JSON.stringify(cats));
+  localStorage.setItem('bf_sups', JSON.stringify(sups));
+  localStorage.setItem('bf_alerts', JSON.stringify(alertRules));
+  localStorage.setItem('bf_nextId', String(nextId));
+}
+function load(){
+  try{
+    const t=localStorage.getItem('bf_txs'); if(t) txs=JSON.parse(t);
+    const c=localStorage.getItem('bf_cats'); if(c) cats=JSON.parse(c);
+    const s=localStorage.getItem('bf_sups'); if(s) sups=JSON.parse(s);
+    const a=localStorage.getItem('bf_alerts'); if(a) alertRules=JSON.parse(a);
+    const n=localStorage.getItem('bf_nextId'); if(n) nextId=parseInt(n);
+  }catch(e){}
+  const w=localStorage.getItem("bf_wallet"); if(w) walletProfile=JSON.parse(w);
+}
+
+// ── DATA ──
+let txs=[
+  {id:1,date:"2025-01-10",description:"Πώληση προϊόντων",amount:2500,type:"income",categoryId:1,supplierId:3,notes:""},
+  {id:2,date:"2025-01-15",description:"Ενοίκιο Ιανουαρίου",amount:800,type:"expense",categoryId:3,supplierId:null,notes:"Αρ. παραστατικού: Α001"},
+  {id:3,date:"2025-02-05",description:"Υπηρεσίες συμβουλευτικής",amount:1800,type:"income",categoryId:2,supplierId:3,notes:""},
+  {id:4,date:"2025-02-15",description:"Ενοίκιο Φεβρουαρίου",amount:800,type:"expense",categoryId:3,supplierId:null,notes:"Αρ. παραστατικού: Α002"},
+  {id:5,date:"2025-02-20",description:"Αγορά εξοπλισμού",amount:1200,type:"expense",categoryId:5,supplierId:1,notes:""},
+  {id:6,date:"2025-03-01",description:"Μισθοί Μαρτίου",amount:3500,type:"expense",categoryId:4,supplierId:null,notes:""},
+  {id:7,date:"2025-03-10",description:"Πώληση υπηρεσιών",amount:4200,type:"income",categoryId:1,supplierId:3,notes:"Τιμολόγιο #2025-07"},
+];
+let cats=[
+  {id:1,name:"Πωλήσεις",type:"income",color:"#2563eb"},
+  {id:2,name:"Υπηρεσίες",type:"income",color:"#0891b2"},
+  {id:3,name:"Ενοίκιο",type:"expense",color:"#dc2626"},
+  {id:4,name:"Μισθοδοσία",type:"expense",color:"#ea580c"},
+  {id:5,name:"Προμήθειες",type:"expense",color:"#d97706"},
+  {id:6,name:"Λογαριασμοί",type:"expense",color:"#7c3aed"},
+];
+let sups=[
+  {id:1,name:"Προμηθευτής Α",contact:"210-1234567",type:"expense"},
+  {id:2,name:"Προμηθευτής Β",contact:"210-7654321",type:"expense"},
+  {id:3,name:"Πελάτης Χ",contact:"210-1111111",type:"income"},
+];
+let alertRules=[
+  {id:1,name:"Μηνιαία Έξοδα",metric:"monthly_expense",threshold:5000,active:true},
+];
+let nextId=100;
+let walletProfile={type:"business",monthlyBudget:3000};
+const PROFILES=[
+  {id:"student",label:"Φοιτητής",icon:"🎓",tips:["Μην ξοδεύεις παραπάνω από 30% του budget σε διασκέδαση","Φτιάξε ταμείο έκτακτης ανάγκης 3 μηνών","Προτίμησε μαγείρεμα στο σπίτι αντί εστιατόρια"]},
+  {id:"family",label:"Οικογένεια",icon:"👨‍👩‍👧",tips:["Τα παιδιά κοστίζουν — άφησε 20% για απρόοπτα","Ασφάλιση υγείας αξίζει πριν όλα","Μειώσου σε subscriptions που δεν χρησιμοποιείς"]},
+  {id:"freelancer",label:"Freelancer",icon:"💻",tips:["Κράτα 25-30% για φόρους κάθε μήνα","Τα έσοδά σου είναι ανισόμετρα — δες τον μέσο όρο 6 μηνών","Επένδυσε σε εξοπλισμό που σου αυξάνει παραγωγικότητα"]},
+  {id:"business",label:"Επιχείρηση",icon:"🏢",tips:["Το περιθώριο κέρδους κάτω από 20% είναι επικίνδυνο","Παρακολούθησε ροή μετρητών εβδομαδιαία","Μείωσε σταθερά κόστη πριν μεταβλητά"]},
+  {id:"pensioner",label:"Συνταξιούχος",icon:"👴",tips:["Προτεραιότητα σε υγεία και ποιότητα ζωής","Αποφύγε μεγάλες αγορές με πίστωση","Μοιράσου έξοδα με οικογένεια όπου μπορείς"]},
+];
+const MONTHS=["Ιαν","Φεβ","Μαρ","Απρ","Μάι","Ιουν","Ιουλ","Αύγ","Σεπ","Οκτ","Νοε","Δεκ"];
+const NAV=[{id:"dashboard",label:"Αρχική",icon:"📊"},{id:"transactions",label:"Κινήσεις",icon:"💳"},{id:"wallet",label:"Πορτοφόλι",icon:"👛"},{id:"compare",label:"Σύγκριση",icon:"📈"},{id:"categories",label:"Κατηγορίες",icon:"🏷️"},{id:"suppliers",label:"Συναλλ/νοι",icon:"🤝"},{id:"alerts",label:"Ειδοποιήσεις",icon:"🔔"}];
+const fmt=n=>new Intl.NumberFormat("el-GR",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(n);
+const totalInc=()=>txs.filter(t=>t.type==="income").reduce((s,t)=>s+t.amount,0);
+const totalExp=()=>txs.filter(t=>t.type==="expense").reduce((s,t)=>s+t.amount,0);
+const balance=()=>totalInc()-totalExp();
+const catById=id=>cats.find(c=>c.id===id);
+const supById=id=>sups.find(s=>s.id===id);
+
+let currentTab="dashboard";
+let filterType="all",filterPeriod="all",searchQ="";
+let darkMode=localStorage.getItem('bf_dark')==='1';
+
+// ── DARK MODE ──
+function toggleDark(){
+  darkMode=!darkMode;
+  document.body.classList.toggle('dark',darkMode);
+  localStorage.setItem('bf_dark',darkMode?'1':'0');
+  updateLogoColor();
+}
+function updateLogoColor(){
+  const wm=document.getElementById('hdr-wm');
+  if(wm) wm.setAttribute('fill', darkMode ? 'url(#hdr-text-dark)' : 'url(#hdr-text)');
+}
+
+// ── DRAWER ──
+function openDrawer(){document.getElementById("drawer").classList.remove("closed");document.getElementById("drawer-bg").style.display="block";}
+function closeDrawer(){}
+function openDrawer(){}
+function showMarginInfo(){
+  const inc=totalInc(),exp=totalExp(),bal=balance();
+  const margin=inc>0?Math.round((bal/inc)*100):0;
+  const color=margin>=20?"var(--green)":margin>=0?"var(--orange)":"var(--red)";
+  const msg=margin>=30?"Εξαιρετικό! Κρατάς πάνω από 30% των εσόδων σου.":
+             margin>=20?"Καλό περιθώριο. Στόχος το 30%+.":
+             margin>=10?"Μέτριο. Προσπάθησε να μειώσεις τα έξοδα.":
+             margin>=0?"Χαμηλό περιθώριο — πρόσεξε τα έξοδα.":
+             "Αρνητικό! Τα έξοδα ξεπερνούν τα έσοδα.";
+  openModal(`<div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><h3 style="font-size:17px;font-weight:800">Τι είναι το Περιθώριο;</h3><button onclick="closeModal()" style="background:var(--surface2);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text2)">×</button></div>
+    <div style="background:var(--surface2);border-radius:14px;padding:20px;text-align:center;margin-bottom:16px">
+      <div style="font-size:48px;font-weight:900;color:${color}">${margin}%</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:4px">${msg}</div>
+    </div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px">
+      <strong style="color:var(--text)">Τύπος:</strong> (Έσοδα − Έξοδα) ÷ Έσοδα × 100<br/>
+      <strong style="color:var(--text)">Παράδειγμα:</strong> Αν έχεις €3.000 έσοδα και €2.400 έξοδα, το περιθώριό σου είναι <strong>20%</strong> — δηλαδή κρατάς €600 από κάθε €3.000.
+    </div>
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;font-size:13px;color:#15803d">
+      🎯 <strong>Στόχος:</strong> Επιχειρήσεις στοχεύουν σε 20-30%+. Κάτω από 10% είναι ανησυχητικό.
+    </div>
+  </div>`);
+}
+function toggleMoreMenu(){
+  const m=document.getElementById("more-menu");
+  const bg=document.getElementById("more-bg");
+  const open=m.style.display==="none";
+  m.style.display=open?"block":"none";
+  bg.style.display=open?"block":"none";
+}
+function fabAction(){
+  if(currentTab==="categories") openCatForm();
+  else if(currentTab==="suppliers") openSupForm();
+  else if(currentTab==="alerts") openAlertForm();
+  else openTxForm(); // dashboard + transactions
+}
+
+// ── MODAL ──
+function openModal(html){
+  const c=document.getElementById("modal-container");
+  c.innerHTML=`<div class="modal-bg" id="modal-bg">${html}</div>`;
+  c.querySelector(".modal-bg").addEventListener("click",e=>{if(e.target===e.currentTarget)closeModal();});
+}
+function closeModal(){document.getElementById("modal-container").innerHTML="";}
+let _toastTimer=null;
+function showToast(msg,type="loading",duration=1800){
+  const t=document.getElementById("toast");
+  t.className="show "+(type==="loading"?"":type);
+  t.innerHTML=type==="loading"
+    ?`<span class="toast-spinner"></span>${msg}`
+    :`<span>${type==="success"?"✓":"✗"}</span>${msg}`;
+  clearTimeout(_toastTimer);
+  if(type!=="loading") _toastTimer=setTimeout(()=>{t.classList.remove("show");},duration);
+}
+function hideToast(){document.getElementById("toast").classList.remove("show");}
+
+// ── ALERT CHECK ──
+function checkAlerts(){
+  const bar=document.getElementById("alerts-bar");
+  const triggered=[];
+  const now=new Date();
+  const curMonth=now.getMonth(), curYear=now.getFullYear();
+  alertRules.filter(r=>r.active).forEach(r=>{
+    if(r.metric==="monthly_expense"){
+      const val=txs.filter(t=>t.type==="expense"&&new Date(t.date).getMonth()===curMonth&&new Date(t.date).getFullYear()===curYear).reduce((s,t)=>s+t.amount,0);
+      if(val>=r.threshold) triggered.push({rule:r,val,msg:`Τα μηνιαία έξοδα (${fmt(val)}) ξεπέρασαν το όριο ${fmt(r.threshold)}`});
+    }
+    if(r.metric==="monthly_income"){
+      const val=txs.filter(t=>t.type==="income"&&new Date(t.date).getMonth()===curMonth&&new Date(t.date).getFullYear()===curYear).reduce((s,t)=>s+t.amount,0);
+      if(val<r.threshold) triggered.push({rule:r,val,msg:`Τα μηνιαία έσοδα (${fmt(val)}) είναι κάτω από ${fmt(r.threshold)}`});
+    }
+    if(r.metric==="balance"){
+      if(balance()<r.threshold) triggered.push({rule:r,val:balance(),msg:`Το υπόλοιπο (${fmt(balance())}) έπεσε κάτω από ${fmt(r.threshold)}`});
+    }
+  });
+  bar.innerHTML=triggered.map(t=>`
+    <div class="alert-banner" style="background:#fef3c7;border:1px solid #fbbf24;color:#92400e;margin-top:8px">
+      <span style="font-size:18px">⚠️</span>
+      <div><div style="font-weight:800;margin-bottom:2px">Ειδοποίηση: ${t.rule.name}</div><div style="font-weight:500;font-size:12px">${t.msg}</div></div>
+    </div>`).join("");
+}
+
+// ── RENDER ──
+function render(){
+  document.body.classList.toggle('dark',darkMode);
+  document.getElementById("page-title")?.remove();
+  const bal=balance();
+  const hdrBal=document.getElementById("hdr-balance");
+  if(hdrBal){hdrBal.textContent=fmt(bal);hdrBal.style.color=bal>=0?"var(--blue)":"var(--red)";}
+  // FAB — show on tabs that need a + action
+  const fabTabs=["transactions","categories","suppliers","alerts","dashboard"];
+  const fab=document.getElementById("fab");
+  fab.style.display=fabTabs.includes(currentTab)?"flex":"none";
+  // Bottom nav active state
+  ["dashboard","transactions","wallet","categories"].forEach(id=>{
+    const btn=document.getElementById("bnav-"+id);
+    if(btn) btn.classList.toggle("active", currentTab===id);
+  });
+  const moreActive=["compare","suppliers","alerts","categories"].includes(currentTab);
+  document.getElementById("bnav-more")?.classList.toggle("active", moreActive);
+  const c=document.getElementById("content");
+  if(currentTab==="dashboard")    c.innerHTML=renderDashboard();
+  else if(currentTab==="wallet")   c.innerHTML=renderWallet();
+  if(currentTab==="transactions") c.innerHTML=renderTransactions();
+  if(currentTab==="compare")      c.innerHTML=renderCompare();
+  if(currentTab==="categories")   c.innerHTML=renderCategories();
+  if(currentTab==="suppliers")    c.innerHTML=renderSuppliers();
+  if(currentTab==="alerts")       c.innerHTML=renderAlerts();
+  checkAlerts();
+}
+function goTab(id){currentTab=id;closeDrawer();render();}
+
+// ── DASHBOARD ──
+function renderDashboard(){
+  const inc=totalInc(),exp=totalExp(),bal=balance();
+  const margin=inc>0?Math.round((bal/inc)*100):0;
+  const recent=[...txs].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,6);
+  const months=[];
+  for(let i=5;i>=0;i--){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);months.push({label:MONTHS[d.getMonth()],key:`${d.getFullYear()}-${d.getMonth()}`,income:0,expense:0});}
+  txs.forEach(t=>{const d=new Date(t.date);const key=`${d.getFullYear()}-${d.getMonth()}`;const m=months.find(m=>m.key===key);if(m)m[t.type]+=t.amount;});
+  const maxV=Math.max(...months.flatMap(m=>[m.income,m.expense]),1);
+  const bars=months.map(m=>`
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <div style="display:flex;gap:2px;align-items:flex-end;height:80px">
+        <div style="width:10px;background:var(--blue);border-radius:3px 3px 0 0;height:${Math.max((m.income/maxV)*80,2)}px;opacity:.85"></div>
+        <div style="width:10px;background:#fca5a5;border-radius:3px 3px 0 0;height:${Math.max((m.expense/maxV)*80,2)}px"></div>
+      </div>
+      <div style="font-size:10px;color:var(--text3);font-weight:600">${m.label}</div>
+    </div>`).join("");
+
+  // PIE CHART
+  const byCat={};
+  txs.forEach(t=>{const cat=catById(t.categoryId);if(!cat)return;if(!byCat[cat.id])byCat[cat.id]={cat,total:0};byCat[cat.id].total+=t.amount;});
+  const catRows=Object.values(byCat).sort((a,b)=>b.total-a.total);
+  const totalAll=catRows.reduce((s,r)=>s+r.total,0)||1;
+  let cumAngle=0;
+  const slices=catRows.map(r=>{
+    const angle=(r.total/totalAll)*360;
+    const start=cumAngle; cumAngle+=angle;
+    const startR=start*Math.PI/180, endR=(start+angle)*Math.PI/180;
+    const x1=50+40*Math.sin(startR), y1=50-40*Math.cos(startR);
+    const x2=50+40*Math.sin(endR), y2=50-40*Math.cos(endR);
+    const large=angle>180?1:0;
+    return angle>=358?`<circle cx="50" cy="50" r="40" fill="${r.cat.color}"/>`
+      :`<path d="M50,50 L${x1},${y1} A40,40 0 ${large},1 ${x2},${y2} Z" fill="${r.cat.color}"/>`;
+  }).join("");
+  const pieHtml=`<svg viewBox="0 0 100 100" style="width:130px;height:130px;flex-shrink:0">
+    ${slices}<circle cx="50" cy="50" r="22" fill="var(--surface)"/>
+    <text x="50" y="54" text-anchor="middle" style="font-size:8px;font-weight:700;fill:var(--text)">${catRows.length} κατ.</text>
+  </svg>`;
+  const legend=catRows.slice(0,5).map(r=>`
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+      <div style="width:10px;height:10px;border-radius:3px;background:${r.cat.color};flex-shrink:0"></div>
+      <span style="font-size:12px;color:var(--text2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.cat.name}</span>
+      <span style="font-size:12px;font-weight:700;color:var(--text)">${Math.round((r.total/totalAll)*100)}%</span>
+    </div>`).join("");
+
+  const recentHtml=recent.map(t=>{const cat=catById(t.categoryId);return`
+    <div class="tx-row" onclick="openTxDetail(${t.id})">
+      <div class="tx-icon" style="background:${cat?cat.color+"22":"var(--surface2)"}"><div class="tx-dot" style="background:${cat?.color||"var(--text3)"}"></div></div>
+      <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.description}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:1px">${t.date}${cat?" · "+cat.name:""}</div></div>
+      <div class="mono" style="font-size:15px;font-weight:800;color:${t.type==="income"?"var(--green)":"var(--red)"};flex-shrink:0;margin-left:8px">${t.type==="income"?"+":"−"}${fmt(t.amount)}</div>
+    </div>`;}).join("");
+
+  return`
+    <div class="hero">
+      <div style="font-size:12px;font-weight:600;opacity:.75;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Καθαρό Υπόλοιπο</div>
+      <div class="mono" style="font-size:36px;font-weight:900;letter-spacing:-.03em;margin-bottom:16px">${fmt(bal)}</div>
+      <div style="display:flex;gap:10px">
+        <div class="stat-mini"><div style="font-size:10px;opacity:.75;margin-bottom:3px">↑ Έσοδα</div><div class="mono" style="font-size:15px;font-weight:800">${fmt(inc)}</div></div>
+        <div class="stat-mini"><div style="font-size:10px;opacity:.75;margin-bottom:3px">↓ Έξοδα</div><div class="mono" style="font-size:15px;font-weight:800">${fmt(exp)}</div></div>
+        <div class="stat-mini" onclick="showMarginInfo()" style="cursor:pointer"><div style="font-size:10px;opacity:.75;margin-bottom:3px">◉ Περιθώριο ⓘ</div><div class="mono" style="font-size:15px;font-weight:800">${margin}%</div></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div class="card" style="padding:16px">
+        <div style="font-size:13px;font-weight:800;margin-bottom:12px">Κατανομή</div>
+        <div style="display:flex;align-items:center;gap:12px">${pieHtml}<div style="flex:1;min-width:0">${legend}</div></div>
+      </div>
+      <div class="card" style="padding:16px">
+        <div style="font-size:13px;font-weight:800;margin-bottom:4px">Μηνιαία Εικόνα</div>
+        <div style="display:flex;align-items:flex-end;gap:4px;padding-top:8px">${bars}</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)">
+        <div style="font-size:14px;font-weight:800">Πρόσφατες Κινήσεις</div>
+        <button onclick="goTab('transactions')" style="background:none;border:none;color:var(--blue);font-size:13px;font-weight:700;cursor:pointer">Όλες →</button>
+      </div>
+      ${recentHtml}
+    </div>`;
+}
+
+
+// ── WALLET ──
+function renderWallet(){
+  const now=new Date();
+  const curMonth=now.getMonth(), curYear=now.getFullYear();
+  const monthTxs=txs.filter(t=>{const d=new Date(t.date);return d.getMonth()===curMonth&&d.getFullYear()===curYear;});
+  const monthInc=monthTxs.filter(t=>t.type==="income").reduce((s,t)=>s+t.amount,0);
+  const monthExp=monthTxs.filter(t=>t.type==="expense").reduce((s,t)=>s+t.amount,0);
+  const budget=walletProfile.monthlyBudget||0;
+  const budgetUsed=budget>0?Math.min(Math.round((monthExp/budget)*100),100):0;
+  const budgetLeft=Math.max(budget-monthExp,0);
+  const daysInMonth=new Date(curYear,curMonth+1,0).getDate();
+  const dayOfMonth=now.getDate();
+  const daysLeft=daysInMonth-dayOfMonth;
+  const dailyLeft=daysLeft>0?budgetLeft/daysLeft:0;
+  const profile=PROFILES.find(p=>p.id===walletProfile.type)||PROFILES[3];
+  const budgetColor=budgetUsed>=90?"var(--red)":budgetUsed>=70?"var(--orange)":"var(--green)";
+  const monthName=["Ιανουάριος","Φεβρουάριος","Μάρτιος","Απρίλιος","Μάιος","Ιούνιος","Ιούλιος","Αύγουστος","Σεπτέμβριος","Οκτώβριος","Νοέμβριος","Δεκέμβριος"][curMonth];
+
+  // AI tips based on data
+  const aiTips=[];
+  if(monthExp>monthInc) aiTips.push({icon:"🚨",text:"Τα έξοδα ξεπερνούν τα έσοδα αυτόν τον μήνα. Μείωσε αμέσως τα μη απαραίτητα.",color:"#fef2f2",border:"#fca5a5"});
+  if(budget>0&&budgetUsed>=80) aiTips.push({icon:"⚠️",text:`Έχεις χρησιμοποιήσει ${budgetUsed}% του μηνιαίου budget σου. Σου μένουν ${daysLeft} μέρες.`,color:"#fff7ed",border:"#fed7aa"});
+  if(dailyLeft>0) aiTips.push({icon:"📅",text:`Μπορείς να ξοδεύεις ${fmt(dailyLeft)}/ημέρα για τις υπόλοιπες ${daysLeft} μέρες.`,color:"#eff6ff",border:"#bfdbfe"});
+  if(monthInc>0&&monthExp/monthInc<0.5) aiTips.push({icon:"🌟",text:"Εξαιρετικός μήνας! Σκέψου να βάλεις το πλεόνασμα σε αποταμίευση.",color:"#f0fdf4",border:"#bbf7d0"});
+  profile.tips.forEach(tip=>aiTips.push({icon:"💡",text:tip,color:"var(--surface2)",border:"var(--border)"}));
+
+  const tipsHtml=aiTips.slice(0,4).map(t=>`
+    <div style="background:${t.color};border:1px solid ${t.border};border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start">
+      <span style="font-size:22px;flex-shrink:0">${t.icon}</span>
+      <span style="font-size:13.5px;color:var(--text);line-height:1.5">${t.text}</span>
+    </div>`).join("");
+
+  const profileBtns=PROFILES.map(p=>`
+    <button onclick="setProfile('${p.id}')" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;border-radius:14px;border:2px solid ${walletProfile.type===p.id?"var(--blue)":"var(--border)"};background:${walletProfile.type===p.id?"var(--blue-light,#eff6ff)":"var(--surface)"};cursor:pointer;flex:1;min-width:0">
+      <span style="font-size:22px">${p.icon}</span>
+      <span style="font-size:10px;font-weight:700;color:${walletProfile.type===p.id?"var(--blue)":"var(--text2)"};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center">${p.label}</span>
+    </button>`).join("");
+
+  return`
+    <!-- HEADER -->
+    <div class="hero" style="margin-bottom:16px">
+      <div style="font-size:12px;font-weight:600;opacity:.75;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">${monthName} ${curYear}</div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px">
+        <div>
+          <div style="font-size:11px;opacity:.7;margin-bottom:2px">Έξοδα μήνα</div>
+          <div class="mono" style="font-size:28px;font-weight:900">${fmt(monthExp)}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:11px;opacity:.7;margin-bottom:2px">Έσοδα μήνα</div>
+          <div class="mono" style="font-size:22px;font-weight:800">${fmt(monthInc)}</div>
+        </div>
+      </div>
+      ${budget>0?`
+      <div style="margin-bottom:6px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;opacity:.75">Budget ${fmt(budget)}</span>
+        <span style="font-size:12px;font-weight:800">${budgetUsed}%</span>
+      </div>
+      <div style="background:rgba(255,255,255,.2);border-radius:6px;height:8px;overflow:hidden">
+        <div style="height:100%;width:${budgetUsed}%;background:${budgetUsed>=80?"#fca5a5":"#fff"};border-radius:6px;transition:width .5s"></div>
+      </div>`:""}
+    </div>
+
+    <!-- PROFILE -->
+    <div class="card" style="padding:16px;margin-bottom:12px">
+      <div style="font-size:13px;font-weight:800;margin-bottom:12px">Προφίλ Χρήστη</div>
+      <div style="display:flex;gap:8px">${profileBtns}</div>
+    </div>
+
+    <!-- BUDGET SETTING -->
+    <div class="card" style="padding:16px;margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:13px;font-weight:800">Μηνιαίο Budget</div>
+        <button onclick="editBudget()" style="background:var(--blue);color:#fff;border:none;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer">Αλλαγή</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div style="text-align:center;background:var(--surface2);border-radius:12px;padding:12px 8px">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:3px">Budget</div>
+          <div class="mono" style="font-size:15px;font-weight:800;color:var(--blue)">${budget>0?fmt(budget):"—"}</div>
+        </div>
+        <div style="text-align:center;background:var(--surface2);border-radius:12px;padding:12px 8px">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:3px">Απομένει</div>
+          <div class="mono" style="font-size:15px;font-weight:800;color:${budgetLeft>0?"var(--green)":"var(--red)"}">${budget>0?fmt(budgetLeft):"—"}</div>
+        </div>
+        <div style="text-align:center;background:var(--surface2);border-radius:12px;padding:12px 8px">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:3px">Ανά μέρα</div>
+          <div class="mono" style="font-size:15px;font-weight:800;color:var(--text)">${dailyLeft>0?fmt(dailyLeft):"—"}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI ADVISOR -->
+    <div style="padding:0 2px;margin-bottom:8px">
+      <div style="font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+        <span style="background:linear-gradient(135deg,#7c6ff7,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent">✦ AI Σύμβουλος</span>
+        <span style="font-size:11px;color:var(--text3);font-weight:500">${profile.icon} ${profile.label}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">${tipsHtml}</div>
+    </div>`;
+}
+
+function setProfile(type){
+  walletProfile={...walletProfile,type};
+  localStorage.setItem("bf_wallet",JSON.stringify(walletProfile));
+  render();
+}
+function editBudget(){
+  openModal(`<div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><h3 style="font-size:17px;font-weight:800">Μηνιαίο Budget</h3><button onclick="closeModal()" style="background:var(--surface2);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text2)">×</button></div>
+    <div class="field"><label>Ποσό Budget (€/μήνα)</label><input id="budget-input" type="number" value="${walletProfile.monthlyBudget||""}" placeholder="π.χ. 2000"/></div>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:16px">Βάλε το μέγιστο ποσό που θέλεις να ξοδεύεις κάθε μήνα.</p>
+    <button class="btn btn-green" style="width:100%;justify-content:center" onclick="saveBudget()">✓ Αποθήκευση</button>
+  </div>`);
+}
+function saveBudget(){
+  const v=parseFloat(document.getElementById("budget-input").value)||0;
+  walletProfile={...walletProfile,monthlyBudget:v};
+  localStorage.setItem("bf_wallet",JSON.stringify(walletProfile));
+  showToast("Αποθήκευση…");
+  setTimeout(()=>{closeModal();render();showToast("Budget αποθηκεύτηκε","success");},400);
+}
+
+// ── TRANSACTIONS ──
+function renderTransactions(){
+  let filtered=txs.filter(t=>{
+    if(filterType!=="all"&&t.type!==filterType)return false;
+    if(filterPeriod!=="all"&&new Date(t.date).getMonth()!==parseInt(filterPeriod))return false;
+    if(searchQ&&!t.description.toLowerCase().includes(searchQ.toLowerCase())&&!(catById(t.categoryId)?.name||"").toLowerCase().includes(searchQ.toLowerCase())&&!(supById(t.supplierId)?.name||"").toLowerCase().includes(searchQ.toLowerCase()))return false;
+    return true;
+  }).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const fInc=filtered.filter(t=>t.type==="income").reduce((s,t)=>s+t.amount,0);
+  const fExp=filtered.filter(t=>t.type==="expense").reduce((s,t)=>s+t.amount,0);
+  const typePills=[{v:"all",l:"Όλα"},{v:"income",l:"↑ Έσοδα"},{v:"expense",l:"↓ Έξοδα"}]
+    .map(p=>`<button class="pill" style="background:${filterType===p.v?"var(--blue)":"var(--surface)"};color:${filterType===p.v?"#fff":"var(--text2)"};box-shadow:${filterType===p.v?"0 2px 8px #2563eb44":"0 1px 3px rgba(0,0,0,.08)"}" onclick="setFT('${p.v}')">${p.l}</button>`).join("");
+  const monthPills=[{v:"all",l:"Όλοι"},...MONTHS.map((m,i)=>({v:String(i),l:m}))]
+    .map(p=>`<button class="pill" style="background:${filterPeriod===p.v?"var(--blue)":"var(--surface)"};color:${filterPeriod===p.v?"#fff":"var(--text2)"};box-shadow:${filterPeriod===p.v?"0 2px 8px #2563eb44":"0 1px 3px rgba(0,0,0,.08)"}" onclick="setFP('${p.v}')">${p.l}</button>`).join("");
+  const rows=filtered.map(t=>{
+    const cat=catById(t.categoryId);const sup=supById(t.supplierId);
+    return`<div class="tx-row" onclick="openTxDetail(${t.id})">
+      <div class="tx-icon" style="background:${cat?cat.color+"22":"var(--surface2)"}"><div class="tx-dot" style="background:${cat?.color||"var(--text3)"}"></div></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.description}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">${t.date}${sup?" · "+sup.name:""}${t.notes?` · 📎`:""}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;margin-left:8px">
+        <div class="mono" style="font-size:15px;font-weight:900;color:${t.type==="income"?"var(--green)":"var(--red)"}">${t.type==="income"?"+":"−"}${fmt(t.amount)}</div>
+        ${cat?`<span class="badge" style="background:${cat.color}22;color:${cat.color}">${cat.name}</span>`:""}
+      </div>
+    </div>`;}).join("");
+  return`
+    <div class="search-bar"><span class="search-icon">🔍</span><input placeholder="Αναζήτηση περιγραφής, κατηγορίας, συναλλ/νου..." value="${searchQ}" oninput="setSearch(this.value)"/></div>
+    <div class="pills">${typePills}</div>
+    <div class="pills">${monthPills}</div>
+    <div style="display:flex;gap:10px;margin-bottom:16px">
+      <div style="flex:1;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:10px 14px">
+        <div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;margin-bottom:2px">Έσοδα</div>
+        <div class="mono" style="font-size:16px;font-weight:900;color:var(--green)">${fmt(fInc)}</div>
+      </div>
+      <div style="flex:1;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:10px 14px">
+        <div style="font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;margin-bottom:2px">Έξοδα</div>
+        <div class="mono" style="font-size:16px;font-weight:900;color:var(--red)">${fmt(fExp)}</div>
+      </div>
+    </div>
+    ${filtered.length===0?`<div class="card" style="padding:40px;text-align:center;color:var(--text3)">Δεν βρέθηκαν κινήσεις</div>`:`<div class="card">${rows}</div>`}`;
+}
+function setFT(v){filterType=v;render();}
+function setFP(v){filterPeriod=v;render();}
+function setSearch(v){searchQ=v;render();}
+
+// ── COMPARE ──
+function renderCompare(){
+  const now=new Date();
+  const m1=parseInt(document.getElementById("cmp-m1")?.value??String(now.getMonth()===0?11:now.getMonth()-1));
+  const m2=parseInt(document.getElementById("cmp-m2")?.value??String(now.getMonth()));
+  const y1=parseInt(document.getElementById("cmp-y1")?.value??String(now.getMonth()===0?now.getFullYear()-1:now.getFullYear()));
+  const y2=parseInt(document.getElementById("cmp-y2")?.value??String(now.getFullYear()));
+
+  const getTxs=(m,y)=>txs.filter(t=>{const d=new Date(t.date);return d.getMonth()===m&&d.getFullYear()===y;});
+  const txs1=getTxs(m1,y1), txs2=getTxs(m2,y2);
+  const inc1=txs1.filter(t=>t.type==="income").reduce((s,t)=>s+t.amount,0);
+  const exp1=txs1.filter(t=>t.type==="expense").reduce((s,t)=>s+t.amount,0);
+  const inc2=txs2.filter(t=>t.type==="income").reduce((s,t)=>s+t.amount,0);
+  const exp2=txs2.filter(t=>t.type==="expense").reduce((s,t)=>s+t.amount,0);
+  const bal1=inc1-exp1, bal2=inc2-exp2;
+
+  const years=[...new Set(txs.map(t=>new Date(t.date).getFullYear()))].sort();
+  const yOpts=years.map(y=>`<option value="${y}">${y}</option>`).join("");
+  const mOpts=MONTHS.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
+
+  const diff=(a,b)=>{
+    const d=b-a; const pct=a?Math.round((d/a)*100):0;
+    const col=d>=0?"var(--green)":"var(--red)";
+    return`<span style="color:${col};font-size:12px;font-weight:700">${d>=0?"▲":"▼"} ${Math.abs(pct)}%</span>`;
+  };
+
+  const statRow=(label,v1,v2)=>`
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;align-items:center">
+      <div style="font-size:13px;color:var(--text2);font-weight:600">${label}</div>
+      <div class="mono" style="font-size:15px;font-weight:800;text-align:center">${fmt(v1)}</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div class="mono" style="font-size:15px;font-weight:800">${fmt(v2)}</div>${diff(v1,v2)}</div>
+    </div>`;
+
+  // bar compare
+  const maxBar=Math.max(inc1,exp1,inc2,exp2,1);
+  const barH=80;
+  const barPair=(v1,v2,col)=>`
+    <div style="display:flex;gap:4px;align-items:flex-end;height:${barH}px">
+      <div style="width:18px;background:${col};border-radius:3px 3px 0 0;height:${Math.max((v1/maxBar)*barH,2)}px;opacity:.6"></div>
+      <div style="width:18px;background:${col};border-radius:3px 3px 0 0;height:${Math.max((v2/maxBar)*barH,2)}px"></div>
+    </div>`;
+
+  return`
+    <div class="card" style="padding:16px;margin-bottom:16px">
+      <div style="font-size:14px;font-weight:800;margin-bottom:14px">Επίλεξε Περιόδους</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <label>Περίοδος Α</label>
+          <div style="display:flex;gap:8px">
+            <select id="cmp-m1" onchange="renderCmp()" style="flex:1">${MONTHS.map((m,i)=>`<option value="${i}" ${i===m1?"selected":""}>${m}</option>`).join("")}</select>
+            <select id="cmp-y1" onchange="renderCmp()" style="width:80px">${years.map(y=>`<option value="${y}" ${y===y1?"selected":""}>${y}</option>`).join("")}</select>
+          </div>
+        </div>
+        <div>
+          <label>Περίοδος Β</label>
+          <div style="display:flex;gap:8px">
+            <select id="cmp-m2" onchange="renderCmp()" style="flex:1">${MONTHS.map((m,i)=>`<option value="${i}" ${i===m2?"selected":""}>${m}</option>`).join("")}</select>
+            <select id="cmp-y2" onchange="renderCmp()" style="width:80px">${years.map(y=>`<option value="${y}" ${y===y2?"selected":""}>${y}</option>`).join("")}</select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:16px;margin-bottom:16px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)">
+        <div></div>
+        <div style="text-align:center;font-size:12px;font-weight:800;color:var(--text2)">${MONTHS[m1]} ${y1}</div>
+        <div style="text-align:center;font-size:12px;font-weight:800;color:var(--blue)">${MONTHS[m2]} ${y2} ▲▼</div>
+      </div>
+      ${statRow("↑ Έσοδα",inc1,inc2)}
+      ${statRow("↓ Έξοδα",exp1,exp2)}
+      ${statRow("◉ Υπόλοιπο",bal1,bal2)}
+      <div style="margin-top:16px;display:flex;gap:20px;justify-content:center;align-items:flex-end">
+        ${barPair(inc1,inc2,"var(--green)")}
+        ${barPair(exp1,exp2,"var(--red)")}
+        ${barPair(bal1<0?0:bal1,bal2<0?0:bal2,"var(--blue)")}
+      </div>
+      <div style="display:flex;gap:20px;justify-content:center;margin-top:6px">
+        ${["Έσοδα","Έξοδα","Υπόλοιπο"].map(l=>`<div style="font-size:10px;color:var(--text3);width:40px;text-align:center">${l}</div>`).join("")}
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:10px">
+        <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:#ccc"></div><span style="font-size:11px;color:var(--text3)">${MONTHS[m1]}</span></div>
+        <div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:2px;background:var(--blue)"></div><span style="font-size:11px;color:var(--text3)">${MONTHS[m2]}</span></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      ${["A","B"].map((lbl,idx)=>{
+        const list=idx===0?txs1:txs2; const mon=idx===0?`${MONTHS[m1]} ${y1}`:`${MONTHS[m2]} ${y2}`;
+        return`<div class="card" style="overflow:hidden">
+          <div style="padding:12px 14px;font-size:13px;font-weight:800;border-bottom:1px solid var(--border)">${mon} (${list.length})</div>
+          ${list.length===0?`<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">Κανένα</div>`:
+          list.slice(0,5).map(t=>{const cat=catById(t.categoryId);return`
+            <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">
+              <div style="width:8px;height:8px;border-radius:2px;background:${cat?.color||"var(--text3)"};flex-shrink:0"></div>
+              <div style="flex:1;font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.description}</div>
+              <div class="mono" style="font-size:12px;font-weight:800;color:${t.type==="income"?"var(--green)":"var(--red)"};flex-shrink:0">${t.type==="income"?"+":"−"}${fmt(t.amount)}</div>
+            </div>`;}).join("")}
+        </div>`;}).join("")}
+    </div>`;
+}
+function renderCmp(){document.getElementById("content").innerHTML=renderCompare();}
+
+// ── CATEGORIES ──
+function renderCategories(){
+  return`<div style="display:flex;flex-direction:column;gap:10px">`+cats.map(cat=>{
+    const txsC=txs.filter(t=>t.categoryId===cat.id);
+    const tot=txsC.reduce((s,t)=>s+(t.type==="income"?t.amount:-t.amount),0);
+    return`<div class="card" style="padding:16px;border-left:4px solid ${cat.color};cursor:pointer" onclick="openCatForm(${cat.id})">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div style="font-size:16px;font-weight:800;margin-bottom:5px">${cat.name}</div>
+        <span class="badge" style="background:${cat.type==="income"?"#16a34a22":"#dc262622"};color:${cat.type==="income"?"var(--green)":"var(--red)"}">${cat.type==="income"?"Έσοδο":"Έξοδο"}</span></div>
+        <div style="text-align:right"><div class="mono" style="font-size:16px;font-weight:900;color:${cat.color}">${fmt(Math.abs(tot))}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">${txsC.length} κινήσεις</div></div>
+      </div>
+    </div>`;}).join("")+`</div>`;
+}
+
+// ── SUPPLIERS ──
+function renderSuppliers(){
+  return`<div style="display:flex;flex-direction:column;gap:10px">`+sups.map(sup=>{
+    const txsS=txs.filter(t=>t.supplierId===sup.id);
+    const tot=txsS.reduce((s,t)=>s+(t.type==="income"?t.amount:-t.amount),0);
+    return`<div class="card" style="padding:16px;cursor:pointer" onclick="openSupForm(${sup.id})">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div style="font-size:16px;font-weight:800;margin-bottom:5px">${sup.name}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+          <span class="badge" style="background:${sup.type==="income"?"#16a34a22":"#dc262622"};color:${sup.type==="income"?"var(--green)":"var(--red)"}">${sup.type==="income"?"Πελάτης":"Προμηθευτής"}</span>
+          ${sup.contact?`<span style="font-size:12px;color:var(--text3)">📞 ${sup.contact}</span>`:""}
+        </div></div>
+        <div style="text-align:right"><div class="mono" style="font-size:16px;font-weight:900;color:${tot>=0?"var(--green)":"var(--red)"}">${fmt(Math.abs(tot))}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">${txsS.length} κινήσεις</div></div>
+      </div>
+    </div>`;}).join("")+`</div>`;
+}
+
+// ── ALERTS ──
+function renderAlerts(){
+  const METRICS=[
+    {v:"monthly_expense",l:"Μηνιαία Έξοδα > X€"},
+    {v:"monthly_income",l:"Μηνιαία Έσοδα < X€"},
+    {v:"balance",l:"Υπόλοιπο < X€"},
+  ];
+  return`
+    <div style="margin-bottom:12px;padding:14px 16px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;font-size:13px;color:#1e40af">
+      <strong>🔔 Ειδοποιήσεις</strong> — Ορίζεις κανόνες και το Finlo σε προειδοποιεί αυτόματα στην αρχή κάθε σελίδας.
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+    ${alertRules.length===0?`<div class="card" style="padding:30px;text-align:center;color:var(--text3)">Δεν υπάρχουν κανόνες</div>`:
+    alertRules.map(r=>{
+      const metricLabel=METRICS.find(m=>m.v===r.metric)?.l||r.metric;
+      return`<div class="card" style="padding:16px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+          <div style="flex:1">
+            <div style="font-size:15px;font-weight:800;margin-bottom:4px">${r.name}</div>
+            <div style="font-size:12px;color:var(--text2)">${metricLabel.replace("X€",fmt(r.threshold))}</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-shrink:0">
+            <button onclick="toggleAlert(${r.id})" class="btn" style="padding:6px 12px;font-size:12px;background:${r.active?"#f0fdf4":"var(--surface2)"};color:${r.active?"var(--green)":"var(--text3)"};border:1px solid ${r.active?"#bbf7d0":"var(--border)"}">
+              ${r.active?"✓ Ενεργό":"○ Ανενεργό"}
+            </button>
+            <button onclick="openAlertForm(${r.id})" class="btn btn-gray" style="padding:6px 12px;font-size:12px">✏️</button>
+            <button onclick="deleteAlert(${r.id})" class="btn" style="padding:6px 12px;font-size:12px;background:#fef2f2;color:var(--red);border:1px solid #fecaca">🗑</button>
+          </div>
+        </div>
+      </div>`;}).join("")}
+    </div>`;
+}
+function toggleAlert(id){alertRules=alertRules.map(r=>r.id===id?{...r,active:!r.active}:r);save();render();}
+function deleteAlert(id){alertRules=alertRules.filter(r=>Number(r.id)!==Number(id));save();render();}
+function openAlertForm(id=null){
+  const r=id?alertRules.find(x=>x.id===id):{name:"",metric:"monthly_expense",threshold:1000,active:true};
+  const METRICS=[{v:"monthly_expense",l:"Μηνιαία Έξοδα > X€"},{v:"monthly_income",l:"Μηνιαία Έσοδα < X€"},{v:"balance",l:"Υπόλοιπο < X€"}];
+  openModal(`<div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><h3 style="font-size:17px;font-weight:800">${id?"Επεξεργασία":"Νέα Ειδοποίηση"}</h3><button onclick="closeModal()" style="background:var(--surface2);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text2)">×</button></div>
+    <div class="field"><label>Όνομα</label><input id="al-name" value="${r.name}" placeholder="π.χ. Έλεγχος εξόδων"/></div>
+    <div class="field"><label>Συνθήκη</label><select id="al-metric">${METRICS.map(m=>`<option value="${m.v}" ${r.metric===m.v?"selected":""}>${m.l}</option>`).join("")}</select></div>
+    <div class="field"><label>Όριο (€)</label><input id="al-threshold" type="number" value="${r.threshold}"/></div>
+    <button class="btn btn-green" style="width:100%;justify-content:center;margin-bottom:10px" onclick="saveAlert(${id||""})">✓ Αποθήκευση</button>
+    <button class="btn btn-gray" style="width:100%;justify-content:center" onclick="closeModal()">Ακύρωση</button>
+  </div>`);
+}
+function saveAlert(id){
+  const name=document.getElementById("al-name").value.trim();
+  if(!name)return alert("Δώσε όνομα");
+  const rec={id:id||nextId++,name,metric:document.getElementById("al-metric").value,threshold:parseFloat(document.getElementById("al-threshold").value)||0,active:true};
+  if(id)alertRules=alertRules.map(r=>r.id===id?rec:r); else alertRules=[...alertRules,rec];
+  showToast("Αποθήκευση…");
+  setTimeout(()=>{save();closeModal();render();showToast("Αποθηκεύτηκε","success");},400);
+}
+
+// ── TX FORMS ──
+function openTxDetail(id){
+  const t=txs.find(x=>x.id===id);
+  const cat=catById(t.categoryId);const sup=supById(t.supplierId);
+  openModal(`<div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><h3 style="font-size:17px;font-weight:800">Κίνηση</h3><button onclick="closeModal()" style="background:var(--surface2);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text2)">×</button></div>
+    <div style="background:${t.type==="income"?"#f0fdf4":"#fef2f2"};border-radius:16px;padding:20px;margin-bottom:20px;text-align:center">
+      <div style="font-size:11px;font-weight:700;color:${t.type==="income"?"var(--green)":"var(--red)"};text-transform:uppercase;margin-bottom:8px">${t.type==="income"?"ΕΣΟΔΟ":"ΕΞΟΔΟ"}</div>
+      <div class="mono" style="font-size:36px;font-weight:900;color:${t.type==="income"?"var(--green)":"var(--red)"}">${t.type==="income"?"+":"−"}${fmt(t.amount)}</div>
+    </div>
+    ${[["Περιγραφή",t.description],["Ημερομηνία",t.date],["Κατηγορία",cat?.name||"—"],["Συναλλ/νος",sup?.name||"—"]].map(([l,v])=>`
+    <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px;color:var(--text2);font-weight:600">${l}</span><span style="font-size:13px;font-weight:700">${v}</span></div>`).join("")}
+    ${t.notes?`<div style="margin-top:12px;padding:12px;background:var(--surface2);border-radius:10px;font-size:13px;color:var(--text2)">📎 ${t.notes}</div>`:""}
+    <div style="height:16px"></div>
+    <button class="btn btn-blue" style="width:100%;justify-content:center;margin-bottom:10px" onclick="closeModal();openTxForm(${t.id})">✏️ Επεξεργασία</button>
+    <button class="btn btn-red" style="width:100%;justify-content:center" onclick="deleteTx(${t.id})">🗑 Διαγραφή</button>
+  </div>`);
+}
+function openTxForm(id=null){
+  const t=id?txs.find(x=>x.id===id):{date:new Date().toISOString().split("T")[0],type:"income",amount:"",description:"",categoryId:"",supplierId:"",notes:""};
+  openModal(`<div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><h3 style="font-size:17px;font-weight:800">${id?"Επεξεργασία":"Νέα Κίνηση"}</h3><button onclick="closeModal()" style="background:var(--surface2);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text2)">×</button></div>
+    <div class="field"><label>Περιγραφή</label><input id="f-desc" value="${t.description||""}" placeholder="π.χ. Ενοίκιο Μαρτίου"/></div>
+    <div class="grid2">
+      <div class="field"><label>Τύπος</label><select id="f-type" onchange="updateCatOpts(this.value)"><option value="income" ${t.type==="income"?"selected":""}>↑ Έσοδο</option><option value="expense" ${t.type==="expense"?"selected":""}>↓ Έξοδο</option></select></div>
+      <div class="field"><label>Ποσό €</label><input id="f-amount" type="number" value="${t.amount||""}" placeholder="0"/></div>
+    </div>
+    <div class="field"><label>Ημερομηνία</label><input id="f-date" type="date" value="${t.date||""}"/></div>
+    <div class="field"><label>Κατηγορία</label><select id="f-cat"><option value="">— Χωρίς —</option>${cats.filter(c=>c.type===t.type).map(c=>`<option value="${c.id}" ${t.categoryId==c.id?"selected":""}>${c.name}</option>`).join("")}</select></div>
+    <div class="field"><label>Συναλλασσόμενος</label><select id="f-sup"><option value="">— Κανείς —</option>${sups.map(s=>`<option value="${s.id}" ${t.supplierId==s.id?"selected":""}>${s.name}</option>`).join("")}</select></div>
+    <div class="field"><label>Σημειώσεις / Παραστατικό</label><textarea id="f-notes" rows="2" placeholder="π.χ. Τιμολόγιο #123, σημείωση...">${t.notes||""}</textarea></div>
+    <button class="btn btn-green" style="width:100%;justify-content:center;margin-bottom:10px" onclick="saveTx(${id||""})">✓ Αποθήκευση</button>
+    <button class="btn btn-gray" style="width:100%;justify-content:center" onclick="closeModal()">Ακύρωση</button>
+  </div>`);
+}
+function updateCatOpts(type){
+  const sel=document.getElementById("f-cat");
+  sel.innerHTML=`<option value="">— Χωρίς —</option>`+cats.filter(c=>c.type===type).map(c=>`<option value="${c.id}">${c.name}</option>`).join("");
+}
+function saveTx(id){
+  const desc=document.getElementById("f-desc").value.trim();
+  const amount=parseFloat(document.getElementById("f-amount").value);
+  const date=document.getElementById("f-date").value;
+  if(!desc||!amount||!date)return alert("Συμπλήρωσε όλα τα υποχρεωτικά πεδία");
+  const rec={id:id||nextId++,description:desc,amount,date,type:document.getElementById("f-type").value,
+    categoryId:parseInt(document.getElementById("f-cat").value)||null,
+    supplierId:parseInt(document.getElementById("f-sup").value)||null,
+    notes:document.getElementById("f-notes").value.trim()};
+  if(id)txs=txs.map(t=>t.id===id?rec:t); else txs=[...txs,rec];
+  showToast("Αποθήκευση…");
+  setTimeout(()=>{save();closeModal();render();showToast("Αποθηκεύτηκε","success");},400);
+}
+function deleteTx(id){showToast("Διαγραφή…");setTimeout(()=>{txs=txs.filter(t=>Number(t.id)!==Number(id));save();closeModal();render();showToast("Διαγράφηκε","success");},350);}
+
+// ── CAT/SUP FORMS ──
+const COLORS=["#2563eb","#0891b2","#16a34a","#7c3aed","#dc2626","#ea580c","#d97706","#0f172a","#db2777","#475569"];
+function openCatForm(id=null){
+  const c=id?cats.find(x=>x.id===id):{name:"",type:"expense",color:"#2563eb"};
+  const dots=COLORS.map(col=>`<div class="color-dot" style="background:${col};box-shadow:${c.color===col?`0 0 0 3px #fff,0 0 0 5px ${col}`:""}" onclick="selectColor('${col}',this)"></div>`).join("");
+  openModal(`<div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><h3 style="font-size:17px;font-weight:800">${id?"Κατηγορία":"Νέα Κατηγορία"}</h3><button onclick="closeModal()" style="background:var(--surface2);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text2)">×</button></div>
+    <div class="field"><label>Όνομα</label><input id="cf-name" value="${c.name||""}"/></div>
+    <div class="field"><label>Τύπος</label><select id="cf-type"><option value="income" ${c.type==="income"?"selected":""}>↑ Έσοδο</option><option value="expense" ${c.type==="expense"?"selected":""}>↓ Έξοδο</option></select></div>
+    <div class="field"><label>Χρώμα</label><div id="color-picker" style="display:flex;gap:10px;flex-wrap:wrap;padding-top:4px">${dots}</div><input type="hidden" id="cf-color" value="${c.color}"/></div>
+    <button class="btn btn-green" style="width:100%;justify-content:center;margin-bottom:10px" onclick="saveCat(${id||""})">✓ Αποθήκευση</button>
+    ${id?`<button class="btn btn-red" style="width:100%;justify-content:center;margin-bottom:10px" onclick="deleteCat(${id})">🗑 Διαγραφή</button>`:""}
+    <button class="btn btn-gray" style="width:100%;justify-content:center" onclick="closeModal()">Ακύρωση</button>
+  </div>`);
+}
+function selectColor(col,el){document.getElementById("cf-color").value=col;document.querySelectorAll(".color-dot").forEach(d=>d.style.boxShadow="");el.style.boxShadow=`0 0 0 3px #fff,0 0 0 5px ${col}`;}
+function saveCat(id){
+  const name=document.getElementById("cf-name").value.trim();
+  if(!name)return alert("Δώσε όνομα");
+  const rec={id:id||nextId++,name,type:document.getElementById("cf-type").value,color:document.getElementById("cf-color").value};
+  if(id)cats=cats.map(c=>c.id===id?rec:c); else cats=[...cats,rec];
+  showToast("Αποθήκευση…");
+  setTimeout(()=>{save();closeModal();render();showToast("Αποθηκεύτηκε","success");},400);
+}
+function deleteCat(id){showToast("Διαγραφή…");setTimeout(()=>{cats=cats.filter(c=>Number(c.id)!==Number(id));txs=txs.map(t=>Number(t.categoryId)===Number(id)?{...t,categoryId:null}:t);save();closeModal();render();showToast("Διαγράφηκε","success");},350);}
+function openSupForm(id=null){
+  const s=id?sups.find(x=>x.id===id):{name:"",contact:"",type:"expense"};
+  openModal(`<div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><h3 style="font-size:17px;font-weight:800">${id?"Συναλλ/νος":"Νέος"}</h3><button onclick="closeModal()" style="background:var(--surface2);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text2)">×</button></div>
+    <div class="field"><label>Όνομα</label><input id="sf-name" value="${s.name||""}"/></div>
+    <div class="field"><label>Τηλ / Email</label><input id="sf-contact" value="${s.contact||""}"/></div>
+    <div class="field"><label>Τύπος</label><select id="sf-type"><option value="income" ${s.type==="income"?"selected":""}>Πελάτης</option><option value="expense" ${s.type==="expense"?"selected":""}>Προμηθευτής</option></select></div>
+    <button class="btn btn-green" style="width:100%;justify-content:center;margin-bottom:10px" onclick="saveSup(${id||""})">✓ Αποθήκευση</button>
+    ${id?`<button class="btn btn-red" style="width:100%;justify-content:center;margin-bottom:10px" onclick="deleteSup(${id})">🗑 Διαγραφή</button>`:""}
+    <button class="btn btn-gray" style="width:100%;justify-content:center" onclick="closeModal()">Ακύρωση</button>
+  </div>`);
+}
+function saveSup(id){
+  const name=document.getElementById("sf-name").value.trim();
+  if(!name)return alert("Δώσε όνομα");
+  const rec={id:id||nextId++,name,contact:document.getElementById("sf-contact").value,type:document.getElementById("sf-type").value};
+  if(id)sups=sups.map(s=>s.id===id?rec:s); else sups=[...sups,rec];
+  showToast("Αποθήκευση…");
+  setTimeout(()=>{save();closeModal();render();showToast("Αποθηκεύτηκε","success");},400);
+}
+function deleteSup(id){showToast("Διαγραφή…");setTimeout(()=>{sups=sups.filter(s=>Number(s.id)!==Number(id));txs=txs.map(t=>Number(t.supplierId)===Number(id)?{...t,supplierId:null}:t);save();closeModal();render();showToast("Διαγράφηκε","success");},350);}
+
+// ── EXPORT ──
+function openSheet(id){if(id==="export")openExport();}
+function openExport(){
+  openModal(`<div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><h3 style="font-size:17px;font-weight:800">Εξαγωγή PDF</h3><button onclick="closeModal()" style="background:var(--surface2);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text2)">×</button></div>
+    <p style="color:var(--text2);font-size:14px;margin-bottom:20px">${txs.length} κινήσεις συνολικά — αποθήκευση ή εκτύπωση.</p>
+    <button class="btn btn-blue" style="width:100%;justify-content:center;font-size:15px;padding:14px" onclick="doExportPDF()">🖨 PDF — Εκτύπωση / Αποθήκευση</button>
+  </div>`);
+}
+function doExportPDF(){
+  const inc=txs.filter(t=>t.type==="income").reduce((s,t)=>s+t.amount,0);
+  const exp=txs.filter(t=>t.type==="expense").reduce((s,t)=>s+t.amount,0);
+  const bal=inc-exp;
+  const today=new Date().toLocaleDateString("el-GR");
+  const rows=txs.map(t=>{
+    const cat=catById(t.categoryId);const sup=supById(t.supplierId);
+    const col=t.type==="income"?"#16a34a":"#dc2626";
+    return`<tr><td>${t.date}</td><td>${t.description}${t.notes?`<div style='font-size:10px;color:#94a3b8;margin-top:2px'>📎 ${t.notes}</div>`:''}</td>
+      <td><span style="background:${t.type==="income"?"#eff6ff":"#fef2f2"};color:${col};padding:2px 8px;border-radius:8px;font-size:11px;font-weight:700">${t.type==="income"?"Έσοδο":"Έξοδο"}</span></td>
+      <td>${cat?.name||"—"}</td><td>${sup?.name||"—"}</td>
+      <td style="text-align:right;font-weight:700;color:${col}">${t.type==="income"?"+":"−"}${fmt(t.amount)}</td></tr>`;
+  }).join("");
+  const existing=document.getElementById("__pdf_print");
+  if(existing)existing.remove();
+  const div=document.createElement("div");
+  div.id="__pdf_print";
+  div.innerHTML=`
+    <div class="pdf-top"><div><div class="pdf-logo" style="letter-spacing:-0.5px">◎ Finlo</div><div class="pdf-sub">Οικονομική Αναφορά — ${today}</div></div>
+    <div style="text-align:right;color:#64748b;font-size:11px">Κινήσεις: <strong>${txs.length}</strong></div></div>
+    <div class="pdf-stats">
+      <div class="pdf-stat"><div class="pdf-sl">Έσοδα</div><div class="pdf-sv" style="color:#16a34a">${fmt(inc)}</div></div>
+      <div class="pdf-stat"><div class="pdf-sl">Έξοδα</div><div class="pdf-sv" style="color:#dc2626">${fmt(exp)}</div></div>
+      <div class="pdf-stat"><div class="pdf-sl">Υπόλοιπο</div><div class="pdf-sv" style="color:${bal>=0?"#2563eb":"#dc2626"}">${fmt(bal)}</div></div>
+    </div>
+    <table class="pdf-table"><thead><tr><th>Ημ/νία</th><th>Περιγραφή</th><th>Τύπος</th><th>Κατηγορία</th><th>Συναλλ.</th><th style="text-align:right">Ποσό</th></tr></thead><tbody>${rows}</tbody></table>`;
+  document.body.appendChild(div);
+  closeModal();
+  setTimeout(()=>{window.print();setTimeout(()=>{const el=document.getElementById("__pdf_print");if(el)el.remove();},1000);},300);
+}
+
+// ── PWA INSTALL ──
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredPrompt=e;
+  const btn=document.createElement('button');
+  btn.className='btn btn-blue';
+  btn.style.cssText='position:fixed;bottom:20px;right:20px;z-index:999;box-shadow:0 4px 20px rgba(37,99,235,.4);border-radius:20px;padding:10px 18px;font-size:13px';
+  btn.innerHTML='📱 Εγκατάσταση App';
+  btn.onclick=()=>{deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{btn.remove();deferredPrompt=null;});};
+  document.body.appendChild(btn);
+});
+
+// ── INIT ──
+load();
+// Normalize all IDs to numbers after load
+txs=txs.map(t=>({...t,id:Number(t.id),categoryId:t.categoryId?Number(t.categoryId):null,supplierId:t.supplierId?Number(t.supplierId):null}));
+cats=cats.map(c=>({...c,id:Number(c.id)}));
+sups=sups.map(s=>({...s,id:Number(s.id)}));
+alertRules=alertRules.map(r=>({...r,id:Number(r.id)}));
+if(darkMode) document.body.classList.add('dark');
+render();
+updateLogoColor();
+
+// ── SERVICE WORKER ──
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js').catch(e=>console.log('SW error:',e));
+  });
+}
+
+// ── SWIPE NAVIGATION ──
+const TAB_ORDER=["dashboard","transactions","categories","compare","suppliers","alerts"];
+let _swipeX=null,_swipeY=null;
+document.addEventListener('touchstart',e=>{_swipeX=e.touches[0].clientX;_swipeY=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(_swipeX===null)return;
+  const dx=e.changedTouches[0].clientX-_swipeX;
+  const dy=e.changedTouches[0].clientY-_swipeY;
+  if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){
+    const idx=TAB_ORDER.indexOf(currentTab);
+    if(dx<0&&idx<TAB_ORDER.length-1) goTab(TAB_ORDER[idx+1]);
+    if(dx>0&&idx>0) goTab(TAB_ORDER[idx-1]);
+  }
+  _swipeX=null;_swipeY=null;
+},{passive:true});
+
+</script>
+</body>
+</html>
